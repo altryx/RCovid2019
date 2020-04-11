@@ -1,0 +1,47 @@
+.panel {
+  background-color: #55555563; 
+  border: none; 
+  padding: 5px; 
+  margin-left: 5px;
+  
+} 
+
+.summarydisplay { 
+  font-size: 18px; 
+  font-family: "Gill Sans Nova", "Arial Nova", Arial, helvetica, serif; 
+  text-align: center;
+  padding: 0;
+  font-variant-caps: all-small-caps;
+  font-weight: bold
+}
+
+.summaryfigure {
+  font-variant-caps: normal;
+  font-size: 22px;
+}
+
+.confirmedcases {
+  color: #ff3737;
+}
+
+.deaths {
+  color: #ffaf37;
+}
+
+.recoveries {
+  color: #0aa000;
+}
+
+.lastupdated[id="lastUpdated"] div {
+  color: #b9b9b9 ;
+  font-size: 18px;
+}
+
+.btn-custom {
+  padding: 3px 7px;
+}
+
+.recalculating {
+  opacity: 1;
+}
+
