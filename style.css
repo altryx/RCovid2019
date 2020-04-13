@@ -2,7 +2,7 @@
   background-color: #55555563; 
   border: none; 
   padding: 5px; 
-  margin-left: 5px;
+  /* margin-left: 5px; */
   
 } 
 
@@ -33,7 +33,7 @@
 }
 
 .lastupdated[id="lastUpdated"] div {
-  color: #b9b9b9 ;
+  color: #b9b9b9;
   font-size: 18px;
 }
 
@@ -43,5 +43,42 @@
 
 .recalculating {
   opacity: 1;
+}
+
+.leaflet-control-layers-expanded {
+  background-color: #55555563;
+  color: #b9b9b9;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+   background-color: #105652;
+}
+
+#copyrightmsg {
+  font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+  background-color: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  padding: 0 5px;
+  color: #333;
+  margin: 0;
+}
+
+.nav li a {
+    padding: 11px 8px;
+    line-height: 0.6; 
+}
+
+.nav > li > a {
+  line-height: 0.6; 
+  padding: 11px 8px;
+  color: #8fa9a7;
+}
+
+.nav-pills li.active a {
+  background-color: #105652;
+}
+
+#test {
+  overflow-y:scroll;
 }
 
