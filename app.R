@@ -143,30 +143,37 @@ ui <- bootstrapPage(
     tags$head(includeCSS("style.css")),
     tags$style(type = "text/css", "html, body {width:100%;height:100%}"),
     leafletOutput("map", width = "100%", height="100%"),
+    
     # Map controls
     absolutePanel(top = 80, left = 12, width = "30px", height = "30px", actionButton("showHistory", label = NULL, icon = icon("history"), class = "btn-custom", title = "Historical data")),
     absolutePanel(top = 120, left = 12, width = "30px", height = "30px", actionButton("showRegionSel", label = NULL, icon = icon("search-location"), class = "btn-custom", title = "Location summary")),
     absolutePanel(top = 160, left = 12, width = "30px", height = "30px", actionButton("resetMap", label = NULL, icon = icon("globe-americas"), class = "btn-custom", title = "Reset map view")),
     absolutePanel(top = 200, left = 12, width = "30px", height = "30px", actionButton("getLocation", label = NULL, icon = icon("location-arrow"), class = "btn-custom", title = "Zoom to your location")),
     absolutePanel(top = 240, left = 12, width = "30px", height = "30px", actionButton("githubLink", label = NULL, icon = icon("github"), class = "btn-custom", title = "Visit project page on GitHub", onclick ="window.open('https://altryx.dev/rcovid2019', '_blank')")),
-    absolutePanel(bottom = 6, right = 265, width = "235px", height = "10px", div(id = "copyrightmsg", "Map data | (C) 2020 Johns Hopkins University")),
+    absolutePanel(bottom = 6, right = 265, width = "235px", height = "10px", fixed = TRUE, div(id = "copyrightmsg", "Map data | (C) 2020 Johns Hopkins University")),
+    
     # Additional panels for map controls
     hidden(absolutePanel(top = 80, left = 45, height = "80px", id = "panelHistory", class = "panel panel-default", 
                          sliderInput("MaxDate", label = NULL, min = min(df_covid$Date), max = max(df_covid$Date), step = 3, value = max(df_covid$Date), timeFormat = "%d %b", animate = animationOptions(interval = 2500, loop = FALSE)))),
     hidden(absolutePanel(top = 120, left = 45, height = "40px", id = "panelRegionSel", class = "panel panel-default", 
                         selectInput("territory", label = NULL, choices = territory_list_summary))),
-    #absolutePanel(bottom = 20, right = 10, id = "controls", class = "panel panel-default", DTOutput("top10_table")),
-    absolutePanel(top = 500, right = 10, width = "250px", height = "45vh", fixed = TRUE, #class = "panel panel-default", 
-                  tabsetPanel(type = "pills", tabPanel(class = "test", "Confirmed", tableOutput("tbl_top10_confirmed")), 
-                              tabPanel("Recoveries", tableOutput("tbl_top10_recoveries")), 
-                              tabPanel("Deaths", tableOutput("tbl_top10_deaths"))
-                              )),
+    
+    # Summary indicators
     absolutePanel(top = 10, right = 10, width = "250px", height = "50px", htmlOutput("total_cases", class = "panel summarydisplay confirmedcases", title = "Total number of confirmed COVID-19 cases as of date")),
     absolutePanel(top = 70, right = 10, width = "250px", height = "50px", htmlOutput("total_deaths", class = "panel summarydisplay deaths", title = "Total number of deaths attributed to COVID-19 as of date")),
     absolutePanel(top = 130, right = 10, width = "250px", height = "50px", htmlOutput("total_recoveries", class = "panel summarydisplay recoveries", title = "Total number of recovered patients as of date")),
     absolutePanel(top = 190, right = 10, width = "250px", height = "25px", htmlOutput("lastUpdated", class = "panel summarydisplay lastupdated", title = "Date of last update. Data is automatically refreshed every 6 hours from the source.")),
-   
-    absolutePanel(top = 240, right = 10, width = "250px", height = "200px", id = "panelGrowthPlot", class = "panel panel-default", title = "Daily movement in the number of confirmed cases.", plotOutput("plt_confirmed_growth", width = "100%", height = "100%"))
+    
+    # Growth in Confirmed cases plot
+    absolutePanel(top = 235, right = 10, width = "250px", height = "200px", id = "panelGrowthPlot", class = "panel panel-default", title = "Daily movement in the number of confirmed cases.", plotOutput("plt_confirmed_growth", width = "100%", height = "100%")),
+    
+    # Top10 Tables
+    absolutePanel(top = 455, right = 10, width = "250px", height = 350, fixed = TRUE, class = "panel panel-default", 
+                  tabsetPanel(type = "pills", 
+                              tabPanel("Confirmed", tableOutput("tbl_top10_confirmed")), 
+                              tabPanel("Recoveries", tableOutput("tbl_top10_recoveries")), 
+                              tabPanel("Deaths", tableOutput("tbl_top10_deaths"))
+                              ))
 )
 
 
@@ -190,10 +197,8 @@ server <- function(input, output, session) {
             setView(zoom = 3.2, lat = 20, lng = 0) %>%
                     addLayersControl(position = "bottomleft",
                                      baseGroups = c("Confirmed cases", "Active cases", "Deaths", "New cases (last 24h)"),
-                                     #overlayGroups = c("SARS", "MERS"),
                                      options = layersControlOptions(collapsed = FALSE)) %>%
-            hideGroup(c("Active cases", "Deaths", "New cases (last 24h)"
-            ))
+            hideGroup(c("Active cases", "Deaths", "New cases (last 24h)"))
     })
     
     # Observer for map layer changes
@@ -255,40 +260,42 @@ server <- function(input, output, session) {
     
     
     # Top 10 countries by Confirmed Cases
-    output$top10_table <- renderDT(
-        isolate({covid_summary_table()}) %>% group_by(Country) %>% summarize(Confirmed = sum(Confirmed), Deaths = sum(Deaths), Recoveries = sum(Recoveries)) %>% arrange(desc(Confirmed)) %>% top_n(n = 10, wt = Confirmed), 
-        options = list(dom = "t"), class="compact") #%>% formatStyle( 0, target= 'row', color = 'black', backgroundColor = 'yellow', fontWeight ='bold', lineHeight='70%')  # arrange(desc(Confirmed)))
-
     output$tbl_top10_confirmed <- function() {
             covid_summary_table() %>% ungroup() %>% group_by(Country) %>% filter(Date == max(Date)) %>% summarize(Confirmed = sum(Confirmed, na.rm = TRUE), dConfirmed = sum(dConfirmed, na.rm = TRUE)) %>% 
             arrange(desc(Confirmed)) %>% top_n(n = 10, wt = Confirmed) %>% ungroup() %>% 
-            mutate(Rank = row_number(), Confirmed = paste0(format(Confirmed, big.mark = " "), " ", ifelse(dConfirmed > 0, "<i class=\"glyphicon glyphicon-triangle-top\"></i>", "<i class=\"glyphicon glyphicon-triangle-bottom\"></i>"))) %>% mutate(dConfirmed = paste0("&Delta; ", format(dConfirmed, big.mark = " "))) %>% 
-            select(Rank, Country, Confirmed, dConfirmed) %>% pivot_longer(names_to = "Param", values_to = "Value", cols=contains("Confirmed")) %>% select(-Param) %>% 
-            mutate(Rank = cell_spec(Rank, color = "black", background = "gray"), Country = cell_spec(Country, font_size = "medium")) %>% 
-            kableExtra::kable(format = "html", col.names = NULL, escape = FALSE) %>% kable_styling(bootstrap_options = c("condensed")) %>% row_spec(1:20, color = "white") %>% column_spec(1, width = "1em") %>%  collapse_rows(columns = 1:2, valign = "middle")
+            mutate(Rank = row_number(), Confirmed = paste0(format(Confirmed, big.mark = " "), " ", ifelse(dConfirmed > 0, "<i class=\"glyphicon glyphicon-triangle-top\"></i>", "<i class=\"glyphicon glyphicon-triangle-bottom\"></i>"))) %>% 
+            select(Rank, Country, Confirmed) %>% 
+            mutate(Rank = cell_spec(Rank, color = "black", background = "gray")) %>% 
+            kableExtra::kable(format = "html", col.names = NULL, escape = FALSE) %>% kable_styling(bootstrap_options = c("condensed"), full_width = TRUE) %>% 
+            row_spec(1:10, color = "white") %>% column_spec(1, width = "1em") %>%  column_spec(3, extra_css = "text-align:right;") %>%
+            scroll_box(height = "350px", extra_css = "overflow-y:auto !important; border: none !important;margin-bottom: 25px;")
     }
     
     # Top 10 countries by Recoveries
     output$tbl_top10_recoveries <- function() {
-        covid_summary_table() %>% ungroup() %>% group_by(Country) %>% filter(Date == max(Date)) %>% summarize(Recoveries = sum(Recoveries, na.rm = TRUE), dRecoveries = sum(dRecoveries, na.rm = TRUE)) %>% 
-            arrange(desc(Recoveries)) %>% top_n(n = 10, wt = Recoveries) %>% ungroup() %>% 
-            mutate(Rank = row_number(), Recoveries = paste0(format(Recoveries, big.mark = " "), " ", ifelse(dRecoveries > 0, "<i class=\"glyphicon glyphicon-triangle-top\"></i>", "<i class=\"glyphicon glyphicon-triangle-bottom\"></i>"))) %>% mutate(dRecoveries = paste0("&Delta; ", format(dRecoveries, big.mark = " "))) %>% 
-            select(Rank, Country, Recoveries, dRecoveries) %>% pivot_longer(names_to = "Param", values_to = "Value", cols=contains("Recoveries")) %>% select(-Param) %>% 
-            mutate(Rank = cell_spec(Rank, color = "black", background = "gray"), Country = cell_spec(Country, font_size = "medium")) %>% 
-            kableExtra::kable(format = "html", col.names = NULL, escape = FALSE) %>% kable_styling(bootstrap_options = c("condensed")) %>% row_spec(1:20, color = "white") %>% column_spec(1, width = "1em") %>%  collapse_rows(columns = 1:2, valign = "middle")
+        covid_summary_table() %>% ungroup() %>% group_by(Country) %>% filter(Date == max(Date)) %>% summarize(Recoveries = sum(Recoveries, na.rm = TRUE), dRecoveries = sum(dRecoveries, na.rm = TRUE)) %>%
+            arrange(desc(Recoveries)) %>% top_n(n = 10, wt = Recoveries) %>% ungroup() %>%
+            mutate(Rank = row_number(), Recoveries = paste0(format(Recoveries, big.mark = " "), " ", ifelse(dRecoveries > 0, "<i class=\"glyphicon glyphicon-triangle-top\"></i>", "<i class=\"glyphicon glyphicon-triangle-bottom\"></i>"))) %>% 
+            select(Rank, Country, Recoveries) %>%
+            mutate(Rank = cell_spec(Rank, color = "black", background = "gray")) %>%
+            kableExtra::kable(format = "html", col.names = NULL, escape = FALSE, ) %>% kable_styling(bootstrap_options = c("condensed"), full_width = TRUE) %>% 
+            row_spec(1:10, color = "white") %>% column_spec(1, width = "1em") %>% 
+            column_spec(3, extra_css = "text-align:right;") %>%
+            scroll_box(height = "350px", extra_css = "overflow-y:auto !important; border: none !important;")
     }
+    
     
     # Top 10 countries by Deaths
     output$tbl_top10_deaths <- function() {
         covid_summary_table() %>% ungroup() %>% group_by(Country) %>% filter(Date == max(Date)) %>% summarize(Deaths = sum(Deaths, na.rm = TRUE), dDeaths = sum(dDeaths, na.rm = TRUE)) %>% 
             arrange(desc(Deaths)) %>% top_n(n = 10, wt = Deaths) %>% ungroup() %>% 
             mutate(Rank = row_number(), Deaths = paste0(format(Deaths, big.mark = " "), " ", ifelse(dDeaths > 0, "<i class=\"glyphicon glyphicon-triangle-top\"></i>", "<i class=\"glyphicon glyphicon-triangle-bottom\"></i>"))) %>% 
-            mutate(dDeaths = paste0("&Delta; ", format(dDeaths, big.mark = " "))) %>% 
-            select(Rank, Country, Deaths, dDeaths) %>% pivot_longer(names_to = "Param", values_to = "Value", cols=contains("Deaths")) %>% select(-Param) %>% 
-            mutate(Rank = cell_spec(Rank, color = "black", background = "gray"), Country = cell_spec(Country, font_size = "medium")) %>% 
+            select(Rank, Country, Deaths) %>%
+            mutate(Rank = cell_spec(Rank, color = "black", background = "gray")) %>% 
             kableExtra::kable(format = "html", col.names = NULL, escape = FALSE) %>% 
-            kable_styling(bootstrap_options = c("condensed"), full_width = T) %>% row_spec(1:20, color = "white") %>% 
-            column_spec(1, width = "1em") %>% column_spec(2, width="4em") %>%collapse_rows(columns = 1:2, valign = "middle") %>% scroll_box(height = "40vh", extra_css = "overflow-y:auto !important; border: none !important;")
+            kable_styling(bootstrap_options = c("condensed"), full_width = TRUE) %>% row_spec(1:10, color = "white") %>% 
+            column_spec(1, width = "1em") %>% column_spec(3, extra_css = "text-align:right;") %>% 
+            scroll_box(height = "350px", extra_css = "overflow-y:auto !important; border: none !important;")
     }
     
     observeEvent(input$showHistory, { hide("panelRegionSel"); toggle("panelHistory")} )

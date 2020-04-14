@@ -2,8 +2,6 @@
   background-color: #55555563; 
   border: none; 
   padding: 5px; 
-  /* margin-left: 5px; */
-  
 } 
 
 .summarydisplay { 
@@ -76,9 +74,5 @@
 
 .nav-pills li.active a {
   background-color: #105652;
-}
-
-#test {
-  overflow-y:scroll;
 }
 
