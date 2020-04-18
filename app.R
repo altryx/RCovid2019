@@ -1,4 +1,4 @@
-
+library(ggplot2)
 library(shiny)
 library(shinyjs)
 library(leaflet)
@@ -9,6 +9,7 @@ library(dplyr)
 library(tidyr)
 library(kableExtra)
 library(magrittr)
+#library(DT)
 
 # Required to resolve issue with image transparency when rendered using shiny-server on linux
 if (.Platform$OS.type == "unix") { options(shiny.usecairo = FALSE) }
@@ -138,7 +139,7 @@ df_covid_daily_summary_world <- df_covid_summary %>%
 
 territory_list_summary <- unique(df_covid_summary$Country)
 territory_list <- paste0(df_covid_summary$Country, ifelse(is.na(df_covid_summary$State),"", paste0(", ", df_covid_summary$State)))
-
+#loc_list <- df_covid_summary %>% select(Country, State, Region, Continent) %>% mutate(Location = paste0(Country, State))
 # Define UI 
 
 ui <- bootstrapPage(
@@ -175,6 +176,10 @@ ui <- bootstrapPage(
     absolutePanel(top = 280, left = 12, width = "30px", height = "30px", actionButton("githubLink", label = NULL, icon = icon("github"), class = "btn-custom", title = "Visit project page on GitHub", onclick ="window.open('https://altryx.dev/rcovid2019', '_blank')")),
     absolutePanel(bottom = 6, right = 265, width = "235px", height = "10px", fixed = TRUE, div(id = "copyrightmsg", "Map data | (C) 2020 Johns Hopkins University")),
     
+    # Additional visualisations
+    #absolutePanel(top = 17, left = 42, height = 30, actionButton("showTrends", label = "Trends"), class = "btn-custom", title = "Trends"),
+    #absolutePanel(top = 15, left = "45%", height = 30, selectizeInput("locSelect", choices = split(loc_list, loc_list[, c("Continent")]), label = NULL, multiple = FALSE)),
+    
     # Additional panels for map controls
     hidden(absolutePanel(top = 80, left = 45, height = "80px", id = "panelHistory", class = "panel panel-default", 
                          sliderInput("MaxDate", label = NULL, min = min(df_covid$Date), max = max(df_covid$Date), step = 3, value = max(df_covid$Date), timeFormat = "%d %b", animate = animationOptions(interval = 2500, loop = FALSE)))),
@@ -197,7 +202,12 @@ ui <- bootstrapPage(
                               tabPanel("Recoveries", tableOutput("tbl_top10_recoveries")), 
                               tabPanel("Deaths", tableOutput("tbl_top10_deaths"))
                               ))
-    
+    # hidden(absolutePanel(top = 80, left = 45, right = 300, height = 400, id = "panelTrends", class = "panel panel-default",
+    #                      tabsetPanel(type = "pills",
+    #                                  tabPanel("Confirmed", fixedRow(div(height = "300px", width = "400px", dataTableOutput("tbl_confirmed", width = "100%", height = "100%")))),
+    #                                  tabPanel("Recoveries"),
+    #                                  tabPanel("Deaths"))
+    #                      ))
 )
 
 
@@ -288,6 +298,22 @@ server <- function(input, output, session) {
     }, bg = "transparent", execOnResize = TRUE)
     
     
+    # tbl_count_rows <- function(df) {
+    #   assign("rowcount", nrow(df), envir = parent.env(parent.frame()))
+    #   df
+    # }
+    
+    #output$tbl_confirmed <- function() {
+    #  output$tbl_confirmed <- renderDataTable ({ DT::datatable({
+    #   covid_summary_table() %>% ungroup() %>% group_by(Country, Date) %>% filter(Date == max(Date)) %>% arrange(desc(Date)) %>% summarize(Confirmed = sum(Confirmed, na.rm = TRUE), dConfirmed = sum(dConfirmed, na.rm = TRUE)) }, rownames = FALSE)
+    #   
+    #   
+    #     #kableExtra::kable(format = "html", col.names = NULL, escape = FALSE) %>%
+    #     
+    #     #(function(x) { assign("rowcount", nrow(x), envir = parent.env(parent.frame())); x }) %>%
+    #     #row_spec(1:rowcount, color = "white")
+    # })
+    
     # Top 10 countries by Confirmed Cases
     output$tbl_top10_confirmed <- function() {
             covid_summary_table() %>% filter(Confirmed > 0) %>% ungroup() %>% group_by(Country) %>% filter(Date == max(Date)) %>% summarize(Confirmed = sum(Confirmed, na.rm = TRUE), dConfirmed = sum(dConfirmed, na.rm = TRUE)) %>% 
@@ -329,8 +355,12 @@ server <- function(input, output, session) {
             scroll_box(height = "350px", extra_css = "overflow-y:auto !important; border: none !important;")
     }
     
-    observeEvent(input$showHistory, { hide("panelRegionSel"); toggle("panelHistory")} )
-    observeEvent(input$showRegionSel, { hide("panelHistory"); toggle("panelRegionSel")})
+    # Todo
+    hide_all_elements <- function() {}
+    
+    observeEvent(input$showHistory, { hide("panelRegionSel"); toggle("panelHistory") })
+    observeEvent(input$showRegionSel, { hide("panelHistory"); toggle("panelRegionSel") })
+    observeEvent(input$showTrends, { hide_all_elements(); toggle("panelTrends") })
     
     # Basic country selection with zoom
     observeEvent(input$territory, ignoreInit = TRUE, {
