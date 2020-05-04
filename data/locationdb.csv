@@ -3,7 +3,7 @@ Afghanistan,,,33.93911,67.709953,38928341,Southern Asia,Asia
 Albania,,,41.1533,20.1683,2877800,Southern Europe,Europe
 Algeria,,,28.0339,1.6596,43851043,Northern Africa,Africa
 Andorra,,,42.5063,1.5218,77265,Southern Europe,Europe
-Angola,,,-11.2027,17.8739,32866268,Middle Africa,Africa
+Angola,,,-11.2027,17.8739,32866268,Central Africa,Africa
 Antigua and Barbuda,,,17.0608,-61.7964,97928,Caribbean,Latin America and the Caribbean
 Argentina,,,-38.4161,-63.6167,45195777,South America,Latin America and the Caribbean
 Armenia,,,40.0691,45.0382,2963234,Western Asia,Asia
@@ -29,13 +29,14 @@ Burma,,,21.9162,95.956,54409794,South-Eastern Asia,Asia
 Burundi,,,-3.3731,29.9189,11890781,Eastern Africa,Africa
 Cabo Verde,,,16.5388,-23.0418,555988,Western Africa,Africa
 Cambodia,,,11.55,104.9167,16718971,South-Eastern Asia,Asia
-Cameroon,,,3.848,11.5021,26545864,Middle Africa,Africa
-Central African Republic,,,6.6111,20.9394,4829764,Middle Africa,Africa
-Chad,,,15.4542,18.7322,16425859,Middle Africa,Africa
+Cameroon,,,3.848,11.5021,26545864,Central Africa,Africa
+Central African Republic,,,6.6111,20.9394,4829764,Central Africa,Africa
+Chad,,,15.4542,18.7322,16425859,Central Africa,Africa
 Chile,,,-35.6751,-71.543,19116209,South America,Latin America and the Caribbean
 Colombia,,,4.5709,-74.2973,50882884,South America,Latin America and the Caribbean
-Congo (Brazzaville),,,-4.2634,15.2832,5518092,Middle Africa,Africa
-Congo (Kinshasa),,,-4.322447,15.307045,89561404,Middle Africa,Africa
+Comoros,,,-11.6455,43.3333,832322,Eastern Africa,Africa
+Congo (Brazzaville),,,-4.2634,15.2832,5518092,Central Africa,Africa
+Congo (Kinshasa),,,-4.322447,15.307045,89561404,Central Africa,Africa
 Costa Rica,,,9.7489,-83.7534,5094114,Central America,Latin America and the Caribbean
 Cote d'Ivoire,,,7.54,-5.5471,26378275,Western Africa,Africa
 Croatia,,,45.1,15.2,4105268,Southern Europe,Europe
@@ -50,7 +51,7 @@ Dominican Republic,,,18.7357,-70.1627,10847904,Caribbean,Latin America and the C
 Ecuador,,,-1.8312,-78.1834,17643060,South America,Latin America and the Caribbean
 Egypt,,,26.820553,30.802498,102334403,Northern Africa,Africa
 El Salvador,,,13.7942,-88.8965,6486201,Central America,Latin America and the Caribbean
-Equatorial Guinea,,,1.6508,10.2679,1402985,Middle Africa,Africa
+Equatorial Guinea,,,1.6508,10.2679,1402985,Central Africa,Africa
 Eritrea,,,15.1794,39.7823,3546427,Eastern Africa,Africa
 Estonia,,,58.5953,25.0136,1326539,Northern Europe,Europe
 Eswatini,,,-26.5225,31.4659,1160164,Southern Africa,Africa
@@ -58,7 +59,7 @@ Ethiopia,,,9.145,40.4897,114963583,Eastern Africa,Africa
 Fiji,,,-17.7134,178.065,896444,Melanesia,Oceania
 Finland,,,61.92411,25.748151,5540718,Northern Europe,Europe
 France,,,46.2276,2.2137,65273512,Western Europe,Europe
-Gabon,,,-0.8037,11.6094,2225728,Middle Africa,Africa
+Gabon,,,-0.8037,11.6094,2225728,Central Africa,Africa
 Gambia,,,13.4432,-15.3101,2416664,Western Africa,Africa
 Georgia,,,42.3154,43.3569,3989175,Western Asia,Asia
 Germany,,,51.165691,10.451526,83783945,Western Europe,Europe
@@ -140,7 +141,7 @@ Saint Kitts and Nevis,,,17.357822,-62.782998,53192,Caribbean,Latin America and t
 Saint Lucia,,,13.9094,-60.9789,183629,Caribbean,Latin America and the Caribbean
 Saint Vincent and the Grenadines,,,12.9843,-61.2872,110947,Caribbean,Latin America and the Caribbean
 San Marino,,,43.9424,12.4578,33938,Southern Europe,Europe
-Sao Tome and Principe,,,0.1864,6.6131,219161,Middle Africa,Africa
+Sao Tome and Principe,,,0.1864,6.6131,219161,Central Africa,Africa
 Saudi Arabia,,,23.885942,45.079162,34813867,Western Asia,Asia
 Senegal,,,14.4974,-14.4524,16743930,Western Africa,Africa
 Serbia,,,44.0165,21.0059,8737370,Southern Europe,Europe
@@ -160,6 +161,7 @@ Sweden,,,60.128161,18.643501,10099270,Northern Europe,Europe
 Switzerland,,,46.8182,8.2275,8654618,Western Europe,Europe
 Syria,,,34.802075,38.996815,17500657,Western Asia,Asia
 Taiwan*,,,23.7,121,23816775,Eastern Asia,Asia
+Tajikistan,,,38.861,71.2761,9100837,Central Asia,Asia
 Tanzania,,,-6.369028,34.888822,59734213,Eastern Africa,Africa
 Thailand,,,15.870032,100.992541,69799978,South-Eastern Asia,Asia
 Timor-Leste,,,-8.874217,125.727539,1318442,South-Eastern Asia,Asia
@@ -215,7 +217,7 @@ Australia,South Australia,,-34.9285,138.6007,1756500,Australia/New Zealand,Ocean
 Australia,Tasmania,,-42.8821,147.3272,535500,Australia/New Zealand,Oceania
 Australia,Victoria,,-37.8136,144.9631,6629900,Australia/New Zealand,Oceania
 Australia,Western Australia,,-31.9505,115.8605,2630600,Australia/New Zealand,Oceania
-Canada,,,60,-95,37855702,Northern America,Northern America
+Canada,,,56.1304,-106.3468,37855702,Northern America,Northern America
 Canada,Alberta,,53.9333,-116.5765,4413146,Northern America,Northern America
 Canada,British Columbia,,53.7267,-127.6476,5110917,Northern America,Northern America
 Canada,Manitoba,,53.7609,-98.8139,1377517,Northern America,Northern America
