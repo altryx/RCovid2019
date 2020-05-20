@@ -1,8 +1,46 @@
-:root {
-  --dlgDtl-left: 450px;
-  --dlgDtl-top: 50px;
-  --dlgDtl-height: 500px;
-  --dlgDtl-width: 800px;
+
+#pnlSiteLogo {
+  top: 12px;
+  left: 12px;
+  height: 110px;
+}
+
+#pnlSiteLogo img {
+  height: 108px;
+  border-radius: 4px;
+}
+
+#pnlMainNav {
+  display: block;
+  top: 125px; 
+  left: 10px;
+  bottom: 0;
+  width: calc(255px + 2.5vw);
+}
+
+#pnlToolbar {
+  position: absolute;
+  top: 5px;
+}
+
+#loadingmsg {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #262626;
+  z-index: 10000;
+  position: absolute;
+  background-image: url(loading2.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+html, body {
+  background: #262626;
+  width: 100%;
+  height: 100%;
 }
 
 .leaflet-container {
@@ -64,6 +102,11 @@
 }
 
 #copyrightmsg {
+  display: block;
+  position: absolute;
+  right: 270px;
+  bottom: 0;
+  height: 15px;
   font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: rgba(255, 255, 255, 0.7);
   font-size: 11px;
@@ -134,31 +177,154 @@ a.table-link:hover {
 ::-webkit-scrollbar-thumb { background: #888; }
 ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-/* Dropdown menu (table sort) */
-#ddnSortCriteria .btn-primary {
-  background-color: #105652;
-  display: inline-block;
-  position: fixed;
-  left: 275px;
-  top: 130px;
-  height: 24px;
-  padding: 2px 2px;
-  z-index:1;
+/* Dropdown menus common (table sort, plot select)
+.btn-primary, .btn-primary:active, .btn-primary:hover, .btn-primary:focus {
+  /* background-color: #105652; 
+  background-color: #444a4a47;
   border-color: #105652;
   outline-color: #105652;
 }
+*/
 
-#ddnSortCriteria .dropdown-menu {
-  left: 129px;
+
+#ddnCumGrowth > .btn, #ddnNewCases > .btn {
+  width: 200px;
+  text-align: left;
 }
+
+#ddnCumGrowth > .dropdown-menu, #ddnNewCases > .dropdown-menu {
+  min-width: 198px;
+}
+
+#ddnPlotSelect > .btn-primary {
+  height:27px;
+  padding: 0;
+  width: 240px;
+  text-align: left;
+  padding-left: 8px;
+}
+
+
+
+.ddn-custom, .ddn-custom > .btn:hover, .ddn-custom > .btn:focus, .ddn-custom > .btn:active {
+  background-color: #444a4a47;
+  border-color: #105652;
+  outline-color: #105652;
+  color: white;
+}
+
+.ddn-custom > .dropdown-menu, .ddn-custom > .dropdown-menu > li > a {
+  background-color: #444a4a47;
+  border-color: #105652;
+  outline-color: #105652;
+  color: white;
+  cursor: pointer;
+}
+
+/* Hover in dropdown menu color */
+.ddn-custom > .dropdown-menu>li>a:hover {
+  background-color: #105652;
+  color: white;
+}
+
+.ddn-custom > .dropdown-menu > .dropdown-header {
+  padding: 3px 7px;
+}
+
+.dropdown-menu li > a > div.checkbox {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Variable selection and sort dropdown menu styling */
+
+.ddn-custom-alt, .ddn-custom-alt > .btn:hover, .ddn-custom-alt > .btn:focus, .ddn-custom-alt > .btn:active{
+  background-color: #105652;
+  border-radius: 4px;
+}
+
+.ddn-custom-alt > .dropdown-menu, .ddn-custom-alt > .dropdown-menu > li > a {
+  background-color: #242727;
+  min-width: 220px;
+}
+
+#ddnVarSelect > .btn {
+  /*height: 27px;
+  padding: 0; */
+  width: 100%;
+  text-align: left;
+  padding-left: 8px;
+}
+
+div#ddnVarSelect.btn-group {
+  width: 100%;
+}
+
+div#ddnVarSelect.shiny-html-output {
+  display: inline-block;
+  width: 80%;
+}
+
+div#ddnSortCriteria.shiny-html-output {
+  display: inline-block;
+  width: 18%;
+}
+
+div#ddnSortCriteria.btn-group {
+  width: 100%;
+}
+
+#ddnSortCriteria > .btn {
+  text-align: left;
+  padding-left: 8px;
+  width: 100%;
+}
+
+#ddnSortCriteria > .dropdown-menu {
+  /* left: 129px; */
+}
+
+
+
+
+
+
+
+#dlgPlotSelect > div {
+  height: 10%;
+  /*margin: 0 auto;
+  position: relative;
+  width: 240px;*/
+  text-align: center;
+  vertical-align: middle;
+}
+
+#ddnPlotSelect > .btn-primary {
+  height:27px;
+  padding: 0;
+  width: 240px;
+  text-align: left;
+  padding-left: 8px;
+}
+
+/* Plot select ddn adjustment */
 
 .ddnSelected {
   font-weight: bold !important;
 }
 
+
 /* Main table formatting */
-#tblStats {
+div#tblStats {
+  position: absolute;
+  top: 50px;
+  bottom: 3px;
+  overflow-y: auto;
+}
+
+table#tblStats {
   color:white;
+  
   /*font-family: "Gill Sans Nova", "Arial Nova", Arial, helvetica, serif; */
 }
 
@@ -169,50 +335,62 @@ a.table-link:hover {
 #tblStats td:nth-child(4) { width: 25px; text-align: right !important; vertical-align: middle; font-size: 11px; white-space: nowrap; }
 
 /* Detail info dialog */
-#dlgDetailInfo {
-  top: var(--dlgDtl-top);
-  left: var(--dlgDtl-left);
-  height: var(--dlgDtl-height);
-  width: var(--dlgDtl-width);
+#pnlDetailInfo {
+  top: 12px;
+  left: calc(255px + 2.5vw + 20px);
+  right: 12px;
+  bottom: 0;
   display: block;
+  /* z-index: 1000; */ 
 } 
 
 /* Close button in the detail dialog */
-#btnDlgClose {
-  display: inline-block;
-  position: fixed;
-  height: 15px;
-  width: 15px;
-  top: calc(var(--dlgDtl-top) + 0.5 * 15px);
-  left: calc(var(--dlgDtl-left) + var(--dlgDtl-width) - 1.5 * 15px);
+#btnPnlClose {
+  display: block;
+  position: absolute; /* fixed */
+  top: 10px;
+  left: 10px;
+  /* top: calc(var(--dlgDtl-top) + 0.5 * 16px);
+  left: calc(var(--dlgDtl-left) + var(--dlgDtl-width) - 1.5 * 16px); */
+  font-size: 18px;
   color: gray;
   z-index: 1;
   cursor: pointer;
 }
 
-#siteLogo {
-  height: 108px;
-  border-radius: 4px;
+
+#pnlDetailTop {
+  height: calc(240px + 1vw);
+  width: 100%;
+  margin-bottom: 2.5vh;
+  display: block;
+  position: absolute;
 }
 
-#dlgDetailTop {
-  height: 30%;
+#pnlDetailPlots {
   width: 100%;
+  top: calc(240px + 1vw);
+  bottom: 0;
   display: block;
-  position: relative;
+  position: absolute;
+  overflow-y: auto;
 }
 
 .dtlCountryLabel, .dtlLastUpdated {
   color: white;
   display: block;
   width: 100%;
-  font-size: 24px;
+  /* font-size: 24px; */
+  /*font-size: 1.7vw; */
+  font-size: calc(24px + 0.5vw);
   font-weight: bold;
   text-align: center;
 }
 
 .dtlLastUpdated {
-  font-size: 12px;
+  /* font-size: 12px;
+  font-size: 0.8vw; */
+  font-size: calc(12px + 0.1vw);
   padding-bottom: 10px;
 }
 
@@ -231,38 +409,77 @@ ul.dtlStats {
 }
 
 .dtlLabel {
-  font-size: 10px;
+  /* font-size: 10px; 
+  font-size: 0.8vw; */
+  font-size: calc(10px + 0.2vw);
   position: relative;
   width: 100%;
 }
 
 .dtlValue {
-  font-size: 15px;
-    display: inline-block;
-    border-width: 1px;
-    border-style: solid;
+  /* font-size: 15px;
+  font-size: 0.95vw; */
+  font-size: calc(15px + 0.2vw);
+  display: inline-block;
+  border-width: 1px;
+  border-style: solid;
     /*position: relative;*/
-    top: 15px;
-    padding: 1px 12px;
-    height: 25px;
-    border-radius: 19px;
-    width: 141px;
-    vertical-align: middle;
-    background: #444a4a47;
-    text-align: center;
-    border-color: #086969;
+    /* top: 15px; */
+    /* padding: 1px 12px; */
+    /* height: 25px; */
+  padding: 0.2vh 12px;
+    /* height: 2.5vh; */
+  border-radius: 19px;
+    /* width: 141px;
+    width: 11vw; */
+  width: calc(140px + 3vw);
+    /* vertical-align: middle;
+    text-align: center; */
+  background: #444a4a47;
+  border-color: #086969;
 }
 
+.tblDelta, .tblDeltaNeg, .tblDeltaPos {
+  font-size: 11px;
+  /* font-size: 0.8vw; 
+  font-size: calc(11px + 0.2vw); */
+  padding-top: 5px;
+}
+
+.tblDeltaNeg, .dtlDeltaNeg {
+  color: #96efa5;
+}
+
+.tblDeltaPos, .dtlDeltaPos, .tblDeltaPos:before, .dtlDeltaPos:before {
+  content: "+";
+  color: #ef9696;
+}
+
+
 .dtlDelta {
-  font-size: 10px;
-  border-style: none;
+  font-size: calc(11px + 0.2vw);
+  padding-top: 5px;
+  /* border-style: none;
   vertical-align: middle;
-  border-color: #086969;
+  border-color: #086969; */
+}
+
+
+/* Caret styling */
+.caret {
+  text-align: right;
+  position: absolute;
+  top: 14px;
+  right: 5px;
 }
 
 .fa-stack {
   text-align: center;
-  top: -2px;
+  position: absolute;
+  /* top: -2px;
+  right: 2px; */ 
+  top: 1px;
+  right: 5px;
 }
 
 .fa-stack .fa-caret-down {
@@ -273,4 +490,22 @@ ul.dtlStats {
 .fa-stack .fa-caret-up {
   position: absolute;
   top: 4px;
+}
+
+.pltDiv {
+  margin: calc(10px + 0.5vw);
+}
+
+.pltTitle {
+  display:inline-block;
+  color: white;
+  margin-right: calc(10px + 0.5vw);
+  margin-bottom: 10px;
+  font-size: calc(12px + 0.3vw);
+  vertical-align: middle;
+  margin-left: 15px;
+}
+
+#dtlPltCumGrowth , #dtlPltNewCases , #dtlPltCaseOutcomes {
+  margin: 0 auto;
 }
